@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Work Bets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="rngBetBody">
+    <h1>RNG Bets</h1>
+    <h2 id="betTitle"></h2>
+    <h2>Place your bets</h2>
+
+  <div id="name-container">
+    <div class="labeled-row">
+      <div class="label"></div>
+      <div class="row" id="name-row"></div>
+    </div>
+    <div class="labeled-row">
+      <div class="label">Bets:</div>
+      <div class="row" id="bet-row"></div>
+    </div>
+    <div class="labeled-row">
+      <div class="label">Guesses:</div>
+      <div class="row" id="guess-row"></div>
+    </div>
+  </div>
+
+    <br/>
+    <button id="rngBetButton">Let's go gambling</button>
+    <br/>
+    <div class="result" id="winningNumber"></div>
+    <h3>Winner:</h3>
+    <div class="winner name" id="winnerName"></div>
+    <div class="winner" id="winnerNumber"></div>
+    <div class="money" id="earnings"></div>
+
+
+    <script src="rngBet.js"></script>
+</body>
+</html>

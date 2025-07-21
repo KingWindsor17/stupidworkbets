@@ -1,0 +1,91 @@
+//Carries over the player list from page 1
+const storedData = localStorage.getItem('playerNameList');
+const rngPlayerList = JSON.parse(storedData);
+const rngPlayerNameList = rngPlayerList.join(", ");
+const numberOfPlayers = rngPlayerList.length;
+
+const betTitle = localStorage.getItem('betTitle');
+document.getElementById('betTitle').textContent = betTitle; // Display bet title on RNG page
+
+//Creates grid of names and input boxes
+const names = rngPlayerList;
+
+const nameRow = document.getElementById("name-row");
+const inputRow = document.getElementById("guess-row");
+const betRow = document.getElementById("bet-row");
+let i=1;
+names.forEach((name, index) => {
+  const nameElem = document.createElement("div");
+  nameElem.textContent = name;
+  nameElem.className = "name-box";
+  nameElem.id = `playerName${index}`;  // e.g., playerName1
+  nameRow.appendChild(nameElem);
+
+  const inputElem = document.createElement("input");
+  inputElem.type = "text";
+  inputElem.className = "input-box";
+  inputElem.id = `playerGuess${index}`;  // e.g., playerGuess1
+  inputRow.appendChild(inputElem);
+
+  const betElem = document.createElement("input");
+  betElem.type = "text";
+  betElem.className = "bet-box";
+  betElem.id = `playerbet${index}`;  // e.g., playerbet1
+  betRow.appendChild(betElem);
+  i++
+});
+
+rngBetButton.addEventListener('click', () => {
+
+const randomNumber = Math.floor(Math.random() * 100) + 1; // Generates a random number between 1 and 100
+
+let differenceList = [];
+let newBet = 0;
+let betAmount = 0;
+// Gets the differences for each guess
+  for (let i = 0; i < names.length; i++) {
+    let guessInput = document.getElementById(`playerGuess${i}`).value;
+    let difference = Math.abs(randomNumber - guessInput);
+    differenceList.push(difference);
+
+    newBet = document.getElementById(`playerbet${i}`).value;
+    betAmount += parseInt(newBet);
+  }
+
+// Check for ties, if ties exist, re-roll random number and re-check differences
+  differenceList = checkForTies(differenceList);
+
+// Maths out winning number and extracts player name associated with guess
+const winnerNumber = Math.min(...differenceList);
+const winnerPlayerNumber = differenceList.indexOf(winnerNumber);
+const winnerPlayerName = rngPlayerList[winnerPlayerNumber];
+document.getElementById('winningNumber').innerHTML = "Rolled Number: " + randomNumber;
+document.getElementById('winnerName').innerHTML = winnerPlayerName;
+document.getElementById('winnerNumber').innerHTML = winnerNumber;
+document.getElementById('earnings').innerHTML = "$" + betAmount;
+
+
+function checkForTies(differenceList) {
+  for (let i = 0; i < differenceList.length; i++) {
+    for (let j = i + 1; j < differenceList.length; j++) {
+      if (differenceList[i] === differenceList[j]) {
+
+        differenceList = [];
+        randomNumber = Math.floor(Math.random() * 100) + 1; // Generates a random number between 1 and 100
+
+      for (let i = 0; i < names.length; i++) {
+        let betInput = document.getElementById(`playerGuess${i}`).value;
+        let difference = Math.abs(randomNumber - betInput);
+        differenceList.push(difference);
+        
+        }
+        // If there are ties, we can re-run the RNG and check again  
+      checkForTies(differenceList);
+  
+        return differenceList; // Found two equal values
+      }
+    }
+  }
+  return differenceList; // No equal values found
+}
+});
